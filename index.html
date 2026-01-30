@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiMPLe - Login</title>
+    <title>SiMPLe - Dashboard</title>
     <style>
         /* Reset & Base Styles */
         * {
@@ -15,94 +15,89 @@
 
         body {
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            /* Soft white-to-blue gradient background */
-            background: linear-gradient(135deg, #f8fafc 0%, #e0ecff 100%);
-            color: #1e293b;
-            /* Slate-800 for better contrast */
-            line-height: 1.5;
+            background-color: #0f172a;
+            /* Dark Navy Base */
+            color: #f1f5f9;
+            /* Light text */
+            line-height: 1.4;
             height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow: hidden;
+            font-size: 14px;
         }
 
-        /* Layout Container */
+        /* --- Login Page Styles --- */
         #login-page {
             width: 100%;
             height: 100%;
             display: flex;
+            /* Default Visible */
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            /* Always on top when visible */
+            background: linear-gradient(135deg, #f8fafc 0%, #e0ecff 100%);
+            color: #1e293b;
         }
 
-        /* Login Card */
         .login-card {
             background: #ffffff;
             width: 100%;
-            max-width: 400px;
-            padding: 48px;
-            border-radius: 16px;
-            /* Softer corners */
-            /* Subtle floating shadow with a hint of blue */
+            max-width: 380px;
+            padding: 40px;
+            border-radius: 12px;
             box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15), 0 8px 10px -6px rgba(59, 130, 246, 0.1);
             text-align: center;
-            transition: transform 0.3s ease;
         }
 
-        .login-card:hover {
-            transform: translateY(-2px);
-        }
-
-        /* Header Section */
         .login-header {
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .app-title {
-            font-size: 2.5rem;
+            font-size: 2.25rem;
             font-weight: 800;
             color: #4f46e5;
-            /* Indigo */
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             letter-spacing: -0.5px;
-            /* Gradient Text Effect */
             background: linear-gradient(to right, #4f46e5, #2563eb);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .app-subtitle {
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             color: #64748b;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
-        /* Form Elements */
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             text-align: left;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.875rem;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #475569;
         }
 
         .form-input {
             width: 100%;
-            padding: 12px 16px;
-            font-size: 1rem;
+            padding: 10px 14px;
+            font-size: 0.95rem;
             color: #334155;
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            transition: all 0.2s ease;
+            border-radius: 6px;
         }
 
         .form-input:focus {
@@ -115,44 +110,442 @@
         .login-btn {
             display: block;
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background-color: #4f46e5;
-            /* Indigo Main */
             color: #ffffff;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             text-align: center;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 32px;
+            margin-top: 24px;
             box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
         }
 
         .login-btn:hover {
             background-color: #4338ca;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.3);
         }
 
-        .login-btn:active {
-            background-color: #3730a3;
-            transform: translateY(0);
-        }
-
-        /* Footer/Legal (Optional for professional look) */
         .login-footer {
-            margin-top: 40px;
-            font-size: 0.75rem;
+            margin-top: 32px;
+            font-size: 0.7rem;
             color: #94a3b8;
             font-weight: 500;
+        }
+
+        /* --- SPA Layout --- */
+        #app-layout {
+            display: none;
+            /* Hidden until logged in */
+            width: 100%;
+            height: 100vh;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background-color: #1e293b;
+            border-right: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            flex-shrink: 0;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-brand {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #f8fafc;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 8px;
+            cursor: pointer;
+        }
+
+        .sidebar-brand span {
+            color: #60a5fa;
+            text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+        }
+
+        .icon-svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2;
+            stroke: currentColor;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 2px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            gap: 12px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background-color: #334155;
+            color: #f1f5f9;
+        }
+
+        .nav-link.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border-left-color: #60a5fa;
+        }
+
+        .nav-link.active .icon-svg {
+            opacity: 1;
+            stroke-width: 2.5;
+        }
+
+        /* Main Application Area (Holds all pages) */
+        .main-app-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: #0f172a;
+        }
+
+        /* Common Styling for All Internal Pages */
+        .spa-page {
+            display: none;
+            /* Hidden by default */
+            width: 100%;
+            height: 100%;
+            padding: 24px;
+            overflow-y: auto;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dashboard-header {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            color: #f8fafc;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            background: #1e293b;
+            padding: 6px 12px;
+            border-radius: 50px;
+            border: 1px solid #334155;
+            cursor: pointer;
+        }
+
+        .avatar-circle {
+            width: 32px;
+            height: 32px;
+            background-color: #3b82f6;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        /* --- DASHBOARD PAGE CONTENT --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #1e293b;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            border: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: #475569;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            line-height: 1.2;
+        }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon-blue {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+        }
+
+        .stat-icon-purple {
+            background: rgba(139, 92, 246, 0.1);
+            color: #a78bfa;
+        }
+
+        .stat-icon-green {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+        }
+
+        .stat-icon-orange {
+            background: rgba(249, 115, 22, 0.1);
+            color: #fb923c;
+        }
+
+        .charts-grid-full {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .chart-card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 24px;
+        }
+
+        .chart-visual {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+            gap: 16px;
+        }
+
+        .bar {
+            width: 36px;
+            background-color: #3b82f6;
+            border-radius: 3px 3px 0 0;
+            position: relative;
+        }
+
+        .bar::after {
+            content: attr(data-label);
+            position: absolute;
+            bottom: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+
+        .bar-blue-light {
+            background-color: #60a5fa;
+        }
+
+        .bar-blue-main {
+            background-color: #3b82f6;
+        }
+
+        .bar-blue-dark {
+            background-color: #2563eb;
+        }
+
+        .bar-blue-deep {
+            background-color: #1d4ed8;
+        }
+
+        .pie-chart {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(#3b82f6 0% 60%, #1e3a8a 60% 100%);
+            margin: auto;
+        }
+
+        .pie-legend {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        /* --- EVENT PAGE CONTENT --- */
+        .form-card {
+            background: #1e293b;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .dark-form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .dark-form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #cbd5e1;
+        }
+
+        .dark-form-input,
+        .dark-form-select,
+        .dark-form-textarea {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            color: #f1f5f9;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+        }
+
+        .dark-form-input:focus {
+            border-color: #60a5fa;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #334155;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid #334155;
+        }
+
+        /* --- PEMILU 2024 CONTENT --- */
+        .iframe-container {
+            flex: 1;
+            width: 100%;
+            background: #1e293b;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            overflow: hidden;
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
 
 <body>
 
+    <!-- 1. LOGIN PAGE (Initial View) -->
     <div id="login-page">
         <main class="login-card">
             <header class="login-header">
@@ -160,19 +553,15 @@
                 <p class="app-subtitle">Sistem Manajemen Pemenangan Legislatif</p>
             </header>
 
-            <form action="#" method="POST">
+            <form onsubmit="event.preventDefault(); app.login();">
                 <div class="form-group">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" id="username" name="username" class="form-input" placeholder="Masukkan username"
-                        required>
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" placeholder="admin" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" name="password" class="form-input"
-                        placeholder="Masukkan password" required>
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" placeholder="••••••" required>
                 </div>
-
                 <button type="submit" class="login-btn">Masuk</button>
             </form>
 
@@ -182,6 +571,377 @@
         </main>
     </div>
 
+    <!-- 2. MAIN APP LAYOUT (Hidden until Login) -->
+    <div id="app-layout" style="display: none;"> <!-- Flex when active -->
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand" onclick="app.showPage('dashboard')">
+                <svg viewBox="0 0 24 24" class="icon-svg" style="color: #60a5fa; width: 24px; height: 24px;">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+                <span>SiMPLe</span> <span style="color: #e2e8f0; font-weight: 300; margin-left: 4px;">App</span>
+            </div>
+            <nav>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <div class="nav-link active" data-page="dashboard" onclick="app.showPage('dashboard')">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                            Dashboard
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" data-page="profile">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Profile
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" data-page="timses">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Timses
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" data-page="event" onclick="app.showPage('event')">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            Event
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" data-page="pendukung">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="8.5" cy="7" r="4"></circle>
+                                <line x1="20" y1="8" x2="20" y2="14"></line>
+                                <line x1="23" y1="11" x2="17" y2="11"></line>
+                            </svg>
+                            Pendukung
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" data-page="broadcast">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                            Broadcast
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" data-page="survei">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                            Survei
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" data-page="aspirasi">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <path
+                                    d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                                </path>
+                            </svg>
+                            Aspirasi
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" data-page="pemilu-2024" onclick="app.showPage('pemilu-2024')">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="m9 12 2 2 4-4"></path>
+                            </svg>
+                            Pemilu 2024
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" data-page="pemilu-2029">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                <line x1="4" y1="22" x2="4" y2="15"></line>
+                            </svg>
+                            Pemilu 2029
+                        </div>
+                    </li>
+                    <li class="nav-item" style="margin-top: 24px; padding-top: 12px; border-top: 1px solid #334155;">
+                        <div class="nav-link" onclick="app.logout()" style="color: #ef4444;">
+                            <svg viewBox="0 0 24 24" class="icon-svg">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            Keluar
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-app-area">
+
+            <!-- A. DASHBOARD VIEW -->
+            <div id="page-dashboard" class="spa-page">
+                <header class="dashboard-header">
+                    <h2 class="page-title">Dashboard</h2>
+                    <div class="user-profile">
+                        <span>Admin Kandidat</span>
+                        <div class="avatar-circle">A</div>
+                    </div>
+                </header>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div>
+                            <div class="stat-label">Jumlah Timses</div>
+                            <div class="stat-value">124</div>
+                        </div>
+                        <div class="stat-icon stat-icon-blue"><svg viewBox="0 0 24 24" class="icon-svg">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg></div>
+                    </div>
+                    <div class="stat-card">
+                        <div>
+                            <div class="stat-label">Jumlah Event</div>
+                            <div class="stat-value">42</div>
+                        </div>
+                        <div class="stat-icon stat-icon-purple"><svg viewBox="0 0 24 24" class="icon-svg">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg></div>
+                    </div>
+                    <div class="stat-card">
+                        <div>
+                            <div class="stat-label">Jumlah Dukungan</div>
+                            <div class="stat-value">8,592</div>
+                        </div>
+                        <div class="stat-icon stat-icon-green"><svg viewBox="0 0 24 24" class="icon-svg">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg></div>
+                    </div>
+                    <div class="stat-card">
+                        <div>
+                            <div class="stat-label">Rata-rata Usia</div>
+                            <div class="stat-value">34 th</div>
+                        </div>
+                        <div class="stat-icon stat-icon-orange"><svg viewBox="0 0 24 24" class="icon-svg">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg></div>
+                    </div>
+                </div>
+
+                <div class="charts-grid-full">
+                    <div class="chart-card">
+                        <h3 class="chart-title">Pendukung Berdasarkan Kabupaten</h3>
+                        <div class="chart-visual">
+                            <div class="bar bar-blue-main" style="height: 80%;" data-label="Samarinda"></div>
+                            <div class="bar bar-blue-main" style="height: 65%;" data-label="Balikpapan"></div>
+                            <div class="bar bar-blue-main" style="height: 90%;" data-label="Kutai K."></div>
+                            <div class="bar bar-blue-main" style="height: 40%;" data-label="Bontang"></div>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="chart-title">Perbandingan Dukungan Gender</h3>
+                        <div class="pie-chart"></div>
+                        <div class="pie-legend">
+                            <div style="font-size: 0.8rem; color: #cbd5e1;"><span class="dot"
+                                    style="background: #3b82f6;"></span> Laki-laki (60%)</div>
+                            <div style="font-size: 0.8rem; color: #cbd5e1;"><span class="dot"
+                                    style="background: #1e3a8a;"></span> Perempuan (40%)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- B. EVENT VIEW -->
+            <div id="page-event" class="spa-page">
+                <header class="dashboard-header">
+                    <div>
+                        <h2 class="page-title">Event</h2>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 4px;">Kelola kegiatan dan agenda
+                            kampanye</p>
+                    </div>
+                    <div class="user-profile">
+                        <span>Admin Kandidat</span>
+                        <div class="avatar-circle">A</div>
+                    </div>
+                </header>
+
+                <div class="form-card">
+                    <form
+                        onsubmit="event.preventDefault(); alert('Simulasi: Event tersimpan!'); app.showPage('dashboard');">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <div class="dark-form-group">
+                                    <label class="dark-form-label">Nama Event</label>
+                                    <input type="text" class="dark-form-input"
+                                        placeholder="Contoh: Pertemuan Warga RW 05">
+                                </div>
+                                <div class="dark-form-group">
+                                    <label class="dark-form-label">Jenis Event</label>
+                                    <select class="dark-form-select">
+                                        <option>Sosialisasi</option>
+                                        <option>Pertemuan</option>
+                                        <option>Kampanye</option>
+                                    </select>
+                                </div>
+                                <div class="dark-form-group">
+                                    <label class="dark-form-label">Tanggal</label>
+                                    <input type="date" class="dark-form-input">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="dark-form-group">
+                                    <label class="dark-form-label">Lokasi</label>
+                                    <input type="text" class="dark-form-input" placeholder="Balai Desa">
+                                </div>
+                                <div class="dark-form-group">
+                                    <label class="dark-form-label">Penanggung Jawab</label>
+                                    <input type="text" class="dark-form-input" placeholder="Nama Koordinator">
+                                </div>
+                                <div class="dark-form-group">
+                                    <label class="dark-form-label">Peserta</label>
+                                    <input type="number" class="dark-form-input" placeholder="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dark-form-group">
+                            <label class="dark-form-label">Catatan</label>
+                            <textarea class="dark-form-textarea" placeholder="Detail kegiatan..."></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="app.showPage('dashboard')">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan Event</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- C. PEMILU 2024 VIEW -->
+            <div id="page-pemilu-2024" class="spa-page">
+                <header class="dashboard-header">
+                    <div>
+                        <h2 class="page-title">Pemilu 2024</h2>
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 4px;">Analisis Perolehan Suara & Real
+                            Count</p>
+                    </div>
+                    <div class="user-profile">
+                        <span>Admin Kandidat</span>
+                        <div class="avatar-circle">A</div>
+                    </div>
+                </header>
+
+                <div class="iframe-container">
+                    <iframe
+                        src="https://lookerstudio.google.com/embed/reporting/a3cced84-1a0a-4c07-99f3-4e84093b63e1/page/FiwlF"
+                        allowfullscreen loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- PURE JS CONTROLLER -->
+    <script>
+        const app = {
+            loginPage: document.getElementById('login-page'),
+            appLayout: document.getElementById('app-layout'),
+
+            // Map page keys to DOM IDs
+            pages: {
+                'dashboard': document.getElementById('page-dashboard'),
+                'event': document.getElementById('page-event'),
+                'pemilu-2024': document.getElementById('page-pemilu-2024')
+            },
+
+            init: function () {
+                console.log("App Initialized");
+                // Check if session exists (simulated)
+                // Default: Show Login
+            },
+
+            login: function () {
+                // Simulate Login
+                this.loginPage.style.display = 'none';
+                this.appLayout.style.display = 'flex';
+                this.showPage('dashboard');
+            },
+
+            logout: function () {
+                this.appLayout.style.display = 'none';
+                this.loginPage.style.display = 'flex';
+                // Reset to dashboard for next login
+                this.hideAllPages();
+            },
+
+            hideAllPages: function () {
+                Object.values(this.pages).forEach(el => {
+                    if (el) el.style.display = 'none';
+                });
+            },
+
+            showPage: function (pageKey) {
+                this.hideAllPages();
+                const target = this.pages[pageKey];
+                if (target) {
+                    target.style.display = 'flex';
+                    this.updateSidebar(pageKey);
+                } else {
+                    console.warn('Page not found:', pageKey);
+                }
+            },
+
+            updateSidebar: function (activeKey) {
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // Add active class to matched link
+                const activeLink = document.querySelector(`.nav-link[data-page="${activeKey}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+        };
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            app.init();
+        });
+    </script>
 </body>
 
 </html>
